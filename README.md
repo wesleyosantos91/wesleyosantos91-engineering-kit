@@ -8,9 +8,25 @@ consumidos por **qualquer projeto** como um **git submodule**.
 > Adiciono o kit uma vez, e mantenho **uma fonte única**: ao evoluir o kit, todos os
 > repositórios que o usam recebem a atualização com um comando — sem recopiar nada.
 
-Baseado no [`ai-harness-chassis`](https://github.com/wesleyosantos91/ai-harness-chassis)
-(payload de configuração) — **sem** código de aplicação (nenhum projeto Spring). O
-escopo aqui é **só configuração**: harness de IA + DevContainer + ferramentas.
+Projeto **independente e autossuficiente** — não depende de nenhum outro repositório.
+O escopo é **só configuração**: harness de IA + DevContainer poliglota + ferramentas.
+**Sem** código de aplicação.
+
+### DevContainer — tudo pronto para estudar, fazer POCs e desenvolver
+
+O DevContainer já sobe com as toolchains que uso no dia a dia:
+
+| Toolchain | Como vem |
+|---|---|
+| **Java 25** (Temurin) | feature do devcontainer |
+| **Python 3.12** + `uv` | feature + `install-tools.sh` |
+| **Go** | feature do devcontainer |
+| **Rust** (cargo/rustup) | feature do devcontainer |
+| **Terraform** | feature do devcontainer |
+| **AWS CLI** | feature do devcontainer |
+| **JMeter** | `install-tools.sh` (Apache JMeter) |
+| Node 22, Docker-in-Docker | features do devcontainer |
+| Claude Code, Codex, RTK, OpenSpec, Repomix + MCPs | `install-tools.sh` |
 
 ---
 
@@ -47,8 +63,21 @@ git commit -m "chore: adiciona engineering-kit"
 ```
 
 Depois: abra o projeto no **DevContainer** ("Reopen in Container"). O
-`postCreateCommand` instala Claude Code, Codex, RTK, OpenSpec, Repomix, `uv` e registra
-os MCPs automaticamente.
+`postCreateCommand` instala as toolchains e CLIs e registra os MCPs automaticamente.
+
+### Clone com tudo de uma vez
+
+Como os symlinks (inclusive `.devcontainer/`) são versionados no projeto, basta clonar
+**com submódulos** e abrir no container — sobe com tudo:
+
+```bash
+git clone --recurse-submodules https://github.com/voce/seu-projeto.git
+# abra no VS Code -> "Reopen in Container"
+```
+
+> Se clonou sem `--recurse-submodules`, rode depois:
+> `git submodule update --init --recursive` (e, no Windows sem Developer Mode,
+> `bash .engineering-kit/install.sh` para recriar os symlinks). Ver [`docs/windows.md`](docs/windows.md).
 
 Passo a passo detalhado: [`docs/getting-started.md`](docs/getting-started.md).
 
@@ -89,7 +118,7 @@ para criar symlinks de **itens novos** que o kit passou a oferecer. Mais em
 | `.codex/`     | agents, skills, `config.example.toml`, perfis MCP |
 | `.agents/`    | skills para o Codex (espelho das skills) |
 | `.ai/`        | rules, prompts, references, templates, `harness.yaml` |
-| `.devcontainer/` | imagem/features + `install-tools.sh` (instala CLIs e MCPs) |
+| `.devcontainer/` | DevContainer poliglota (Java/Python/Go/Rust/Terraform/AWS/JMeter) + `install-tools.sh` (CLIs e MCPs) |
 | `scripts/`    | `ai/`, `quality/`, **`hooks/`**, `lib/`, `mcp/` |
 | `config/`     | checkstyle (Java 25), spotless, archunit, pitest, plugins de pom |
 | `docs/ai-harness/` | documentação do harness (agents, skills, MCP, quality gates, OpenSpec/SDD) |
@@ -102,12 +131,9 @@ para criar symlinks de **itens novos** que o kit passou a oferecer. Mais em
 
 ---
 
-## Atualizar o kit a partir do `ai-harness-chassis`
+## Evoluir o kit
 
-O payload em `kit/` é um espelho de `ai-harness-chassis/template/`. Para trazer evoluções
-do chassi: recopie `template/` para `kit/`, renomeie `gitignore.chassis` → `gitignore.kit`,
-e mantenha os arquivos com placeholder intactos (o `install.sh` os detecta sozinho). Rode
-os validadores antes de commitar:
+Edite o payload em `kit/` e rode os validadores antes de commitar:
 
 ```bash
 cd kit
@@ -116,9 +142,15 @@ bash scripts/ai/validate-claude-agents.sh
 bash scripts/ai/validate-codex-agents.sh
 ```
 
+Projetos que usam o kit puxam a evolução com `bash .engineering-kit/update.sh`.
+
 ---
 
 ## Licença
 
-A definir. _(O `ai-harness-chassis` não declara licença; o `setup-init` usa CC BY-NC-SA 4.0.
-Defina antes de tornar o repositório público.)_
+**CC BY-NC-SA 4.0** (Creative Commons Attribution-NonCommercial-ShareAlike 4.0) —
+ver [`LICENSE`](LICENSE).
+
+- **BY** — credite **Wesley Oliveira Santos** e referencie este projeto.
+- **NC** — proibido uso comercial / venda.
+- **SA** — derivados devem manter esta mesma licença e o código aberto.

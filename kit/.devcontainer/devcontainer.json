@@ -12,6 +12,12 @@
     "ghcr.io/devcontainers/features/python:1": {
       "version": "3.12"
     },
+    "ghcr.io/devcontainers/features/go:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "latest"
+    },
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
       "version": "latest",
       "moby": false
@@ -35,7 +41,10 @@
         "eamodio.gitlens",
         "github.vscode-github-actions",
         "hashicorp.terraform",
-        "amazonwebservices.aws-toolkit-vscode"
+        "amazonwebservices.aws-toolkit-vscode",
+        "golang.go",
+        "rust-lang.rust-analyzer",
+        "ms-python.python"
       ]
     },
     "jetbrains": {

@@ -66,6 +66,31 @@ install_rtk() {
   sh /tmp/rtk-install.sh
 }
 
+install_jmeter() {
+  # Apache JMeter (teste de carga/performance). Requer Java, já provido por feature.
+  local version="${JMETER_VERSION:-5.6.3}"
+  local dest="/opt/apache-jmeter-${version}"
+
+  if command -v jmeter >/dev/null 2>&1; then
+    echo "JMeter already installed: $(command -v jmeter)"
+    return 0
+  fi
+
+  echo "Installing Apache JMeter ${version}"
+  local tgz="/tmp/jmeter-${version}.tgz"
+  local primary="https://dlcdn.apache.org/jmeter/binaries/apache-jmeter-${version}.tgz"
+  local mirror="https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${version}.tgz"
+  if ! curl -fsSL "$primary" -o "$tgz"; then
+    echo "Mirror primário indisponível; tentando archive.apache.org"
+    curl -fsSL "$mirror" -o "$tgz" || { echo "Não foi possível baixar o JMeter ${version}; pulando."; return 0; }
+  fi
+  sudo tar -xzf "$tgz" -C /opt
+  sudo ln -sf "${dest}/bin/jmeter" /usr/local/bin/jmeter
+  sudo ln -sf "${dest}/bin/jmeter-server" /usr/local/bin/jmeter-server 2>/dev/null || true
+  rm -f "$tgz"
+  echo "JMeter instalado em ${dest} (jmeter no PATH)"
+}
+
 run_project_init() {
   local marker_path="$1"
   local command_line="$2"
@@ -142,6 +167,9 @@ install_npm_global "${CLAUDE_CODE_NPM_PACKAGE:-@anthropic-ai/claude-code}"
 install_npm_global "${OPEN_SPEC_NPM_PACKAGE:-@fission-ai/openspec@latest}"
 install_rtk
 install_npm_global "${REPOMIX_NPM_PACKAGE:-repomix}"
+
+# Ferramenta de teste de carga (Go/Rust/Java/Python/Terraform/AWS vêm das features).
+install_jmeter
 
 run_project_init "${OPEN_SPEC_MARKER:-openspec}" "${OPEN_SPEC_INIT_COMMAND:-openspec init --tools codex,claude --force}" "OpenSpec"
 

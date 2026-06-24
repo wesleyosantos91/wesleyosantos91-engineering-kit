@@ -49,7 +49,7 @@ wesleyosantos91-engineering-kit/
 ├── install.sh / update.sh / uninstall.sh   # mecânica de symlink+scaffold
 ├── .gitattributes                          # força LF nos .sh (rodam no Linux)
 ├── docs/                                   # esta documentação
-└── kit/                                    # PAYLOAD (espelho de ai-harness-chassis/template/)
+└── kit/                                    # PAYLOAD (configs aplicadas ao projeto)
     ├── .claude/ .codex/ .agents/ .ai/ .devcontainer/
     ├── scripts/ config/ docs/ infra/ openspec/
     ├── .mcp.json compose.yaml CLAUDE.md AGENTS.md ...

@@ -1,18 +1,25 @@
 # Dev Container
 
-Este devcontainer usa uma imagem Linux oficial de devcontainers com Java 25 e evita configurações específicas de IDE. Ele pode ser aberto por qualquer cliente compatível com a especificação Dev Containers, incluindo IntelliJ IDEA e VS Code.
+DevContainer poliglota sobre a imagem Linux oficial `mcr.microsoft.com/devcontainers/base:ubuntu-22.04`,
+sem configurações específicas de IDE. Pode ser aberto por qualquer cliente compatível com a
+especificação Dev Containers (VS Code, IntelliJ IDEA, etc.).
 
-Ferramentas instaladas no `postCreateCommand`:
+Toolchains via **features** do devcontainer (versão pinada, independente do distro base):
 
-- Java 25, via imagem `mcr.microsoft.com/devcontainers/java:25-bookworm`.
-- Maven, reforcado no `postCreateCommand` caso `mvn` ainda nao esteja disponivel.
-- Node.js 22, npm, Python e pipx, reforcados no `postCreateCommand` caso ainda nao estejam disponiveis.
+- **Java 25** (Temurin) · **Python 3.12** · **Go** · **Rust** (rustup/cargo).
+- **Terraform** · **AWS CLI**.
+- **Node.js 22** · **Docker-in-Docker**.
+
+Ferramentas instaladas no `postCreateCommand` (`install-tools.sh`):
+
+- **JMeter** (Apache JMeter — teste de carga; versão via `JMETER_VERSION`, default 5.6.3).
+- **uv** (Astral) para Python.
 - Codex: `@openai/codex`.
 - Claude Code: `@anthropic-ai/claude-code`.
-- AGY, Google Antigravity CLI: configuravel via `AGY_INSTALL_COMMAND`.
 - OpenSpec: `@fission-ai/openspec@latest`.
 - RTK: instalado pelo script oficial do `rtk-ai/rtk`.
-- Repomix, para contexto de IA do repositorio: `repomix`.
+- Repomix, para contexto de IA do repositório: `repomix`.
+- Registro dos MCPs do Codex (`scripts/mcp/*`).
 
 Depois da instalacao, o `postCreateCommand` tenta inicializar as tres ferramentas dentro do repositorio:
 
@@ -24,7 +31,7 @@ Os nomes dos pacotes podem ser alterados sem editar o script, definindo variáve
 
 - `CODEX_NPM_PACKAGE`
 - `CLAUDE_CODE_NPM_PACKAGE`
-- `AGY_INSTALL_COMMAND`
+- `JMETER_VERSION`
 - `OPEN_SPEC_NPM_PACKAGE`
 - `REPOMIX_NPM_PACKAGE`
 - `OPEN_SPEC_INIT_COMMAND`
