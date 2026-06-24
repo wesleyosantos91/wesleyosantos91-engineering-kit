@@ -52,11 +52,15 @@
     }
   },
   "forwardPorts": [
-    8080
+    8080,
+    5665
   ],
   "portsAttributes": {
     "8080": {
-      "label": "Spring Boot"
+      "label": "App"
+    },
+    "5665": {
+      "label": "k6 web dashboard"
     }
   }
 }

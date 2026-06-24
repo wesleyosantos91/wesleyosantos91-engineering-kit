@@ -66,6 +66,54 @@ install_rtk() {
   sh /tmp/rtk-install.sh
 }
 
+install_k6() {
+  # k6 (teste de carga; alternativa ao JMeter). Binário único, sem dependências.
+  if command -v k6 >/dev/null 2>&1; then
+    echo "k6 already installed: $(command -v k6)"
+    return 0
+  fi
+  echo "Installing k6"
+  local arch tgz url ver
+  case "$(uname -m)" in
+    x86_64|amd64) arch="amd64" ;;
+    aarch64|arm64) arch="arm64" ;;
+    *) echo "Arquitetura não suportada p/ k6: $(uname -m); pulando."; return 0 ;;
+  esac
+  # Resolve o asset linux-<arch> da última release (evita errar o nome do arquivo).
+  url="$(curl -fsSL https://api.github.com/repos/grafana/k6/releases/latest \
+        | grep browser_download_url | grep "linux-${arch}.tar.gz" \
+        | grep -vi 'sha\|checksum' | head -1 | cut -d'"' -f4)"
+  if [ -z "$url" ]; then
+    ver="${K6_VERSION:-v2.0.0}"
+    url="https://github.com/grafana/k6/releases/download/${ver}/k6-${ver}-linux-${arch}.tar.gz"
+  fi
+  tgz="/tmp/k6.tgz"
+  if ! curl -fsSL "$url" -o "$tgz"; then echo "Não foi possível baixar o k6; pulando."; return 0; fi
+  tar -xzf "$tgz" -C /tmp
+  local dir; dir="$(find /tmp -maxdepth 1 -type d -name 'k6-v*-linux-*' | head -1)"
+  sudo install -m 0755 "${dir}/k6" /usr/local/bin/k6
+  rm -rf "$tgz" "$dir"
+  echo "k6 instalado: $(k6 version 2>/dev/null | head -1)"
+}
+
+install_caveman() {
+  # Caveman: skill de compressão de tokens p/ Claude Code/Codex (inclui caveman-review).
+  local marker="$HOME/.claude/.caveman-installed"
+  if [ -f "$marker" ]; then
+    echo "Caveman already installed"
+    return 0
+  fi
+  echo "Installing Caveman (+ caveman-review)"
+  # Instala globalmente (hooks em ~/.claude) e deixa ativo no repo (--with-init).
+  if curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/caveman/main/install.sh \
+       | bash -s -- --non-interactive --with-init; then
+    mkdir -p "$HOME/.claude" && touch "$marker"
+    echo "Caveman instalado e iniciado"
+  else
+    echo "Não foi possível instalar o Caveman; pulando (não bloqueia o setup)."
+  fi
+}
+
 install_jmeter() {
   # Apache JMeter (teste de carga/performance). Requer Java, já provido por feature.
   local version="${JMETER_VERSION:-5.6.3}"
@@ -90,6 +138,7 @@ install_jmeter() {
   rm -f "$tgz"
   echo "JMeter instalado em ${dest} (jmeter no PATH)"
 }
+
 
 run_project_init() {
   local marker_path="$1"
@@ -168,8 +217,12 @@ install_npm_global "${OPEN_SPEC_NPM_PACKAGE:-@fission-ai/openspec@latest}"
 install_rtk
 install_npm_global "${REPOMIX_NPM_PACKAGE:-repomix}"
 
-# Ferramenta de teste de carga (Go/Rust/Java/Python/Terraform/AWS vêm das features).
+# Ferramentas de teste de carga (Go/Rust/Java/Python/Terraform/AWS vêm das features).
 install_jmeter
+install_k6
+
+# Skills/token-savers de IA.
+install_caveman
 
 run_project_init "${OPEN_SPEC_MARKER:-openspec}" "${OPEN_SPEC_INIT_COMMAND:-openspec init --tools codex,claude --force}" "OpenSpec"
 

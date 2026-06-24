@@ -13,11 +13,15 @@ Toolchains via **features** do devcontainer (versão pinada, independente do dis
 Ferramentas instaladas no `postCreateCommand` (`install-tools.sh`):
 
 - **JMeter** (Apache JMeter — teste de carga; versão via `JMETER_VERSION`, default 5.6.3).
+- **k6** (teste de carga; binário da última release. Dashboard web embutido:
+  `K6_WEB_DASHBOARD=true k6 run script.js` → porta 5665. Exemplo em `examples/k6/`).
 - **uv** (Astral) para Python.
 - Codex: `@openai/codex`.
 - Claude Code: `@anthropic-ai/claude-code`.
-- OpenSpec: `@fission-ai/openspec@latest`.
-- RTK: instalado pelo script oficial do `rtk-ai/rtk`.
+- OpenSpec: `@fission-ai/openspec@latest` (iniciado com `openspec init`).
+- RTK: script oficial do `rtk-ai/rtk` (iniciado com `rtk init -g`).
+- **Caveman** (+ `caveman-review`): token-saver para Claude Code/Codex, instalado e
+  iniciado (`--with-init`).
 - Repomix, para contexto de IA do repositório: `repomix`.
 - Registro dos MCPs do Codex (`scripts/mcp/*`).
 

@@ -25,8 +25,10 @@ O DevContainer já sobe com as toolchains que uso no dia a dia:
 | **Terraform** | feature do devcontainer |
 | **AWS CLI** | feature do devcontainer |
 | **JMeter** | `install-tools.sh` (Apache JMeter) |
+| **k6** | `install-tools.sh` (teste de carga; dashboard web embutido, sem Grafana) |
 | Node 22, Docker-in-Docker | features do devcontainer |
-| Claude Code, Codex, RTK, OpenSpec, Repomix + MCPs | `install-tools.sh` |
+| Claude Code, Codex, RTK, OpenSpec, Repomix + MCPs | `install-tools.sh` (RTK/OpenSpec já iniciados) |
+| **Caveman** (+ `caveman-review`) | `install-tools.sh` (token-saver, instalado e iniciado) |
 
 ---
 
