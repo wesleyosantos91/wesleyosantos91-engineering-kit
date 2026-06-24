@@ -227,17 +227,37 @@ install_npm_global "${REPOMIX_NPM_PACKAGE:-repomix}"
 install_jmeter
 install_k6
 
-# Skills/token-savers de IA.
+# Skills/token-savers de IA (Claude: plugin; Codex: skills em .agents/skills/).
 install_caveman
+if grep -q 'caveman@caveman' "$HOME/.claude/settings.json" 2>/dev/null; then
+  echo "Caveman OK (Claude Code): plugin habilitado em ~/.claude/settings.json."
+else
+  echo "WARN: plugin Caveman não habilitado em ~/.claude/settings.json."
+fi
 
 run_project_init "${OPEN_SPEC_MARKER:-openspec}" "${OPEN_SPEC_INIT_COMMAND:-openspec init --tools codex,claude --force}" "OpenSpec"
 
-# Initialize RTK globally for both Codex and Claude Code. RTK does not create the
-# parent config dirs, and --auto-patch is incompatible with --codex.
-echo "Initializing RTK (global) for Codex and Claude Code"
+# Initialize RTK globally para AMBOS — Claude Code E Codex. RTK não cria os dirs
+# pais, e --auto-patch é incompatível com --codex (são duas chamadas).
+# Ordem importa: Claude PRIMEIRO (instala o hook), senão o init do Codex emite o
+# aviso transitório "No hook installed".
+echo "Initializing RTK (global) for Claude Code and Codex"
 mkdir -p "$HOME/.codex" "$HOME/.claude"
-rtk init -g --codex </dev/null || echo "Could not run: rtk init -g --codex"
-rtk init -g --auto-patch </dev/null || echo "Could not run: rtk init -g"
+rtk init -g --auto-patch </dev/null || echo "WARN: rtk init -g (Claude) falhou"   # Claude: hook PreToolUse
+rtk init -g --codex      </dev/null || echo "WARN: rtk init -g --codex falhou"     # Codex: RTK.md + @ref no AGENTS.md
+
+# Verificação explícita de que o RTK ficou ativo nos DOIS.
+if grep -q 'rtk hook claude' "$HOME/.claude/settings.json" 2>/dev/null; then
+  echo "RTK OK (Claude Code): hook PreToolUse instalado em ~/.claude/settings.json."
+else
+  echo "WARN: hook do RTK (Claude) ausente em ~/.claude/settings.json."
+fi
+if [ -f "$HOME/.codex/RTK.md" ] && grep -q 'RTK.md' "$HOME/.codex/AGENTS.md" 2>/dev/null; then
+  echo "RTK OK (Codex): ~/.codex/RTK.md + @ref no ~/.codex/AGENTS.md."
+else
+  echo "WARN: RTK do Codex incompleto (~/.codex/RTK.md ou @ref no AGENTS.md)."
+fi
+
 configure_codex_mcps
 
 # Repomix runs fine without a config (sensible defaults) and `repomix --init` is
