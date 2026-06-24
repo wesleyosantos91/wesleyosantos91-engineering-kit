@@ -104,9 +104,11 @@ install_caveman() {
     return 0
   fi
   echo "Installing Caveman (+ caveman-review)"
-  # Instala globalmente (hooks em ~/.claude) e deixa ativo no repo (--with-init).
+  # Instala globalmente (hooks em ~/.claude) — auto-ativa no Claude Code/Codex, que é o
+  # uso deste kit. Evitamos --with-init de propósito: ele espalharia arquivos de regra
+  # em .cursor/.windsurf/.clinerules/.github/... em TODO projeto consumidor.
   if curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/caveman/main/install.sh \
-       | bash -s -- --non-interactive --with-init; then
+       | bash -s -- --non-interactive; then
     mkdir -p "$HOME/.claude" && touch "$marker"
     echo "Caveman instalado e iniciado"
   else
