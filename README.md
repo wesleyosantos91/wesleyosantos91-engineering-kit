@@ -49,34 +49,35 @@ Detalhes e a tabela completa do que é symlink vs cópia: [`docs/architecture.md
 
 ---
 
-## Quickstart — só adicionar o submódulo e subir o DevContainer
-
-**Você só faz isto. Mais nada:**
+## Quickstart
 
 ```bash
+# 1. adicionar o kit como submódulo
 git submodule add https://github.com/wesleyosantos91/wesleyosantos91-engineering-kit .engineering-kit
 git config -f .gitmodules submodule..engineering-kit.branch main   # rastrear o branch main
-git add .gitmodules .engineering-kit && git commit -m "chore: adiciona engineering-kit"
+
+# 2. popular a raiz do projeto com os configs (.claude/.agents/.codex/scripts/...)
+bash .engineering-kit/bootstrap.sh
+
+# 3. versionar
+git add -A && git commit -m "chore: adiciona engineering-kit"
 ```
 
-Agora **abra no DevContainer**: VS Code → *Reopen in Container* → escolha a config
-`.engineering-kit/kit/.devcontainer/devcontainer.json` (ou `devcontainer up`).
+O `bootstrap.sh` (dentro do submódulo) **popula a raiz** do seu projeto: `.claude/`,
+`.codex/`, `.agents/`, `.ai/`, `scripts/`, `.mcp.json` viram **symlinks** na raiz
+apontando pro submódulo; `CLAUDE.md`, `AGENTS.md`, `.ai/harness.yaml`,
+`.devcontainer/devcontainer.json` são personalizados (**base package auto-detectado** do
+seu `src/main/java`).
 
-Ao subir, o `postCreateCommand` (`bootstrap.sh`) faz **tudo sozinho**:
+Agora **abra no DevContainer** (*Reopen in Container* → config
+`.engineering-kit/kit/.devcontainer/devcontainer.json`). O **mesmo `bootstrap.sh`** roda
+no `postCreate` e, por estar dentro do container, **instala as toolchains e CLIs**
+(Java/Maven/Gradle/Python/Go/Rust/Terraform/AWS/JMeter/k6 + Claude Code, Codex, RTK,
+OpenSpec, Repomix, Caveman) e **registra os MCPs**.
 
-1. **Aplica o kit na raiz do seu projeto** — `.claude/`, `.codex/`, `.agents/`, `.ai/`,
-   `scripts/`, `.mcp.json`, etc. viram symlinks na raiz; `CLAUDE.md`, `AGENTS.md`,
-   `.ai/harness.yaml`, `.devcontainer/devcontainer.json` são personalizados (o
-   **base package é auto-detectado** do seu `src/main/java`).
-2. **Instala as toolchains e CLIs** (Java/Python/Go/Rust/Terraform/AWS/JMeter/k6 +
-   Claude Code, Codex, RTK, OpenSpec, Repomix, Caveman) e **registra os MCPs**.
-
-Depois do 1º boot, a config também passa a existir em `.devcontainer/` na raiz, então
-nas próximas vezes o *Reopen in Container* já acha direto.
-
-> **Instalação manual (sem DevContainer):** se quiser aplicar na máquina host sem subir o
-> container, rode `bash .engineering-kit/install.sh` (auto-detecta o base package; aceita
-> `--base-package`/`--name`/`--force`). É o mesmo que o `bootstrap.sh` chama por baixo.
+> Pode até pular o passo 2: se você só fizer `git submodule add` e subir o DevContainer,
+> o `postCreate` roda o `bootstrap.sh` e popula a raiz **e** instala as ferramentas de uma
+> vez. Rodar o passo 2 antes só serve para já ver/commitar as pastas na raiz fora do container.
 
 ### Clone com tudo de uma vez
 

@@ -34,7 +34,7 @@
     }
   },
   "remoteUser": "vscode",
-  "postCreateCommand": "bash \"$(find . -path '*kit/.devcontainer/bootstrap.sh' | head -1)\"",
+  "postCreateCommand": "bash \"$(find . -maxdepth 2 -name bootstrap.sh | head -1)\"",
   "customizations": {
     "vscode": {
       "extensions": [
