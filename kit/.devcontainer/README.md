@@ -6,7 +6,7 @@ especificação Dev Containers (VS Code, IntelliJ IDEA, etc.).
 
 Toolchains via **features** do devcontainer (versão pinada, independente do distro base):
 
-- **Java 25** (Temurin) · **Python 3.12** · **Go** · **Rust** (rustup/cargo).
+- **Java 25** (Temurin) + **Maven** + **Gradle** · **Python 3.12** · **Go** · **Rust** (rustup/cargo).
 - **Terraform** · **AWS CLI**.
 - **Node.js 22** · **Docker-in-Docker**.
 

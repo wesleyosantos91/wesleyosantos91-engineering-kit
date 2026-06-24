@@ -53,6 +53,18 @@ if [ "$PURGE" -eq 1 ]; then
   done < <(find "$PAYLOAD" -type f -print0)
 fi
 
+# Remove diretórios que ficaram VAZIOS após tirar symlinks/copias dos dirs mistos
+# (ex.: .ai/, .devcontainer/, config/). Só toca em dirs de topo que o kit gerencia.
+while IFS= read -r -d '' entry; do
+  base="$(basename "$entry")"
+  [ "$base" = "gitignore.kit" ] && continue
+  dst="$TARGET/$base"
+  if [ -d "$dst" ] && [ ! -L "$dst" ]; then
+    find "$dst" -type d -empty -delete 2>/dev/null || true
+    [ -d "$dst" ] && rmdir "$dst" 2>/dev/null && echo "  removido dir vazio: $base" && REMOVED=$((REMOVED+1)) || true
+  fi
+done < <(find "$PAYLOAD" -mindepth 1 -maxdepth 1 -print0)
+
 # Remove o bloco marcado do .gitignore.
 GI="$TARGET/.gitignore"
 if [ -f "$GI" ] && grep -qF "# >>> engineering-kit (managed) >>>" "$GI"; then

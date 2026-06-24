@@ -18,7 +18,7 @@ O DevContainer já sobe com as toolchains que uso no dia a dia:
 
 | Toolchain | Como vem |
 |---|---|
-| **Java 25** (Temurin) | feature do devcontainer |
+| **Java 25** (Temurin) + **Maven** + **Gradle** | feature do devcontainer |
 | **Python 3.12** + `uv` | feature + `install-tools.sh` |
 | **Go** | feature do devcontainer |
 | **Rust** (cargo/rustup) | feature do devcontainer |

@@ -28,7 +28,11 @@ add_path_to_profile() {
   fi
 }
 
+# Inclui ~/.bashrc: o terminal integrado do VS Code costuma ser bash NÃO-login,
+# que lê ~/.bashrc (e não ~/.profile). Sem isto, claude/codex/rtk/repomix (em
+# ~/.npm-global/bin e ~/.local/bin) não aparecem no PATH do terminal.
 add_path_to_profile "$HOME/.profile"
+add_path_to_profile "$HOME/.bashrc"
 add_path_to_profile "$HOME/.zshrc"
 
 export PATH="$NPM_PREFIX/bin:$PIPX_BIN:$PATH"
