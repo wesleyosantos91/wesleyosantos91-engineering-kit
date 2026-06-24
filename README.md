@@ -49,37 +49,47 @@ Detalhes e a tabela completa do que é symlink vs cópia: [`docs/architecture.md
 
 ---
 
-## Quickstart
+## Quickstart — só adicionar o submódulo e subir o DevContainer
+
+**Você só faz isto. Mais nada:**
 
 ```bash
-# 1. adicionar o kit como submódulo (ex.: em .engineering-kit)
 git submodule add https://github.com/wesleyosantos91/wesleyosantos91-engineering-kit .engineering-kit
 git config -f .gitmodules submodule..engineering-kit.branch main   # rastrear o branch main
-
-# 2. aplicar no projeto (cria symlinks + personaliza os arquivos por-projeto)
-bash .engineering-kit/install.sh --base-package com.acme.orders --name orders
-
-# 3. versionar o ponteiro do submódulo
-git add .gitmodules .engineering-kit CLAUDE.md AGENTS.md
-git commit -m "chore: adiciona engineering-kit"
+git add .gitmodules .engineering-kit && git commit -m "chore: adiciona engineering-kit"
 ```
 
-Depois: abra o projeto no **DevContainer** ("Reopen in Container"). O
-`postCreateCommand` instala as toolchains e CLIs e registra os MCPs automaticamente.
+Agora **abra no DevContainer**: VS Code → *Reopen in Container* → escolha a config
+`.engineering-kit/kit/.devcontainer/devcontainer.json` (ou `devcontainer up`).
+
+Ao subir, o `postCreateCommand` (`bootstrap.sh`) faz **tudo sozinho**:
+
+1. **Aplica o kit na raiz do seu projeto** — `.claude/`, `.codex/`, `.agents/`, `.ai/`,
+   `scripts/`, `.mcp.json`, etc. viram symlinks na raiz; `CLAUDE.md`, `AGENTS.md`,
+   `.ai/harness.yaml`, `.devcontainer/devcontainer.json` são personalizados (o
+   **base package é auto-detectado** do seu `src/main/java`).
+2. **Instala as toolchains e CLIs** (Java/Python/Go/Rust/Terraform/AWS/JMeter/k6 +
+   Claude Code, Codex, RTK, OpenSpec, Repomix, Caveman) e **registra os MCPs**.
+
+Depois do 1º boot, a config também passa a existir em `.devcontainer/` na raiz, então
+nas próximas vezes o *Reopen in Container* já acha direto.
+
+> **Instalação manual (sem DevContainer):** se quiser aplicar na máquina host sem subir o
+> container, rode `bash .engineering-kit/install.sh` (auto-detecta o base package; aceita
+> `--base-package`/`--name`/`--force`). É o mesmo que o `bootstrap.sh` chama por baixo.
 
 ### Clone com tudo de uma vez
 
-Como os symlinks (inclusive `.devcontainer/`) são versionados no projeto, basta clonar
-**com submódulos** e abrir no container — sobe com tudo:
+Depois do 1º boot os symlinks (inclusive `.devcontainer/`) ficam versionados, então quem
+clonar o projeto **com submódulos** sobe com tudo:
 
 ```bash
 git clone --recurse-submodules https://github.com/voce/seu-projeto.git
 # abra no VS Code -> "Reopen in Container"
 ```
 
-> Se clonou sem `--recurse-submodules`, rode depois:
-> `git submodule update --init --recursive` (e, no Windows sem Developer Mode,
-> `bash .engineering-kit/install.sh` para recriar os symlinks). Ver [`docs/windows.md`](docs/windows.md).
+> Clonou sem `--recurse-submodules`? `git submodule update --init --recursive` e reabra o
+> container. No Windows sem Developer Mode, ver [`docs/windows.md`](docs/windows.md).
 
 Passo a passo detalhado: [`docs/getting-started.md`](docs/getting-started.md).
 

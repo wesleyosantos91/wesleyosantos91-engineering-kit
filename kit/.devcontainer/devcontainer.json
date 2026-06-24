@@ -30,7 +30,7 @@
     }
   },
   "remoteUser": "vscode",
-  "postCreateCommand": "bash .devcontainer/install-tools.sh",
+  "postCreateCommand": "bash \"$(find . -path '*kit/.devcontainer/bootstrap.sh' | head -1)\"",
   "customizations": {
     "vscode": {
       "extensions": [

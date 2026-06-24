@@ -74,7 +74,16 @@ mkdir -p "$TARGET"
 TARGET="$(cd "$TARGET" && pwd)"
 
 PROJECT_NAME="${PROJECT_NAME:-$(basename "$TARGET")}"
-BASE_PACKAGE="${BASE_PACKAGE:-com.example}"
+
+# Auto-detecta o base package a partir do código do projeto (declaração `package`
+# do 1º .java em src/main/java). Permite o postCreate do devcontainer rodar sem args.
+detect_base_package() {
+  local t="$1" f pkg
+  f="$(find "$t/src/main/java" -name '*.java' 2>/dev/null | head -1)"
+  [ -n "$f" ] && pkg="$(grep -m1 '^package ' "$f" 2>/dev/null | sed 's/^package //; s/;.*//' | tr -d ' \r')"
+  echo "${pkg:-com.example}"
+}
+if [ -z "$BASE_PACKAGE" ]; then BASE_PACKAGE="$(detect_base_package "$TARGET")"; fi
 
 if [ "$TARGET" = "$SCRIPT_DIR" ]; then
   echo "ERRO: alvo == diretório do kit. Rode a partir do projeto que usa o submódulo," >&2
