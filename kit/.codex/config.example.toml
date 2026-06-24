@@ -2,6 +2,11 @@
 # Copie para .codex/config.toml manualmente se desejar — não é aplicado
 # automaticamente para não sobrescrever sua configuração local.
 # hooks permanecem DESATIVADOS por padrão (segurança).
+#
+# IMPORTANTE: o Codex DESCOBRE as skills automaticamente em .agents/skills/ (segue
+# symlinks). Você NÃO precisa deste arquivo para ativá-las. Os blocos [[skills.config]]
+# abaixo são só ILUSTRATIVOS de override — o uso real é desligar uma skill com
+# `enabled = false`. Ref.: https://developers.openai.com/codex/skills
 
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"

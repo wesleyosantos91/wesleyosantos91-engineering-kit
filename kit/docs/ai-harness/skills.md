@@ -43,4 +43,20 @@ bash scripts/ai/validate-skills.sh
 
 ## Codex
 
-Registre as skills em `.codex/config.example.toml` (cópia manual para `.codex/config.toml`).
+O Codex CLI **descobre as skills automaticamente** — varre `.agents/skills/` do diretório
+atual até a raiz do repositório (e **segue symlinks**, então o `.agents` symlinkado na raiz
+do projeto funciona). Nenhum registro manual é necessário: skills com `name` + `description`
+no frontmatter já ficam disponíveis (invoque com `/skills` ou `$nome`).
+
+O arquivo `.codex/config.example.toml` serve **apenas para DESABILITAR** skills (override),
+via `[[skills.config]]` com `enabled = false` — copie para `.codex/config.toml` só se quiser
+desligar alguma. **Não é necessário para ativar/descobrir** as skills.
+
+> Escopos que o Codex varre: repositório (`.agents/skills` de cwd até a raiz), usuário
+> (`$HOME/.agents/skills`), admin (`/etc/codex/skills`) e as embutidas pela OpenAI.
+> Ref.: https://developers.openai.com/codex/skills
+
+### Paridade Claude × Codex
+A maioria das skills está nos dois (`.claude/skills/` e `.agents/skills/`). Exceções:
+`harness-init` é só do Claude (onboarding); as `openspec-*` são geridas pelo OpenSpec
+(`.codex/skills/`) e não duplicadas em `.agents/skills/`.
