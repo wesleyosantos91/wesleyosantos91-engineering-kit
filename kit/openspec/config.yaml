@@ -1,0 +1,46 @@
+schema: spec-driven
+
+# Project context (optional)
+# Mostrado à IA ao criar artefatos do OpenSpec (proposal/design/spec/tasks).
+# Aqui amarramos o fluxo PRD -> OpenSpec: o PRD é a fonte de verdade e deve ser
+# lido ANTES de gerar qualquer artefato.
+context: |
+  Fonte de verdade de produto/negócio: PRDs em `docs/prd/<iniciativa>.md`
+  (gerados pela skill `prd-produto` / `/prd-produto`). O template fica em
+  `docs/product/PRD.template.md`.
+
+  ANTES de criar qualquer artefato (proposal, design, spec, tasks), LEIA primeiro o
+  PRD correspondente em `docs/prd/` e derive dele: problema de negócio, objetivos,
+  escopo e não objetivos, requisitos de negócio (RN), requisitos funcionais (RF),
+  regras de negócio (RB), critérios de aceite, métricas, dependências e riscos.
+
+  Não invente requisitos: o que não estiver no PRD deve virar pergunta aberta. Se o
+  PRD tiver perguntas bloqueantes, registre a lacuna e NÃO assuma respostas como fato.
+
+  Cadeia do fluxo:
+  PRD (docs/prd/) -> OpenSpec change (openspec/: proposal/design/tasks) -> implementação TDD.
+  O design/plano técnico (SDD) fica no `design.md` da própria change.
+
+  Convenções técnicas: Java 25, Maven (`./mvnw`), arquitetura por pacotes
+  (web/message/application/domain/infrastructure/core), TDD obrigatório, quality gates
+  (Spotless, Checkstyle, JaCoCo >= 90%, PIT >= 90%, ArchUnit). Ver `.ai/rules/` e `AGENTS.md`.
+
+# Per-artifact rules (optional)
+# Reforço por artefato. As regras NÃO devem ser copiadas para dentro do arquivo gerado;
+# são restrições para a IA (assim como o `context`).
+rules:
+  proposal:
+    - Referencie explicitamente o PRD de origem (caminho `docs/prd/<iniciativa>.md` e `prd_id` PRD-<kebab>).
+    - Derive o "what & why" do problema de negócio, dos objetivos e do escopo do PRD; não redefina o problema.
+    - Inclua uma seção de não objetivos coerente com os não objetivos do PRD.
+  design:
+    - Baseie as decisões técnicas nos requisitos (RN/RF), regras de negócio (RB), critérios de aceite e NFRs do PRD.
+    - Registre perguntas bloqueantes do PRD como riscos/decisões em aberto; não assuma respostas.
+    - Referencie o PRD de origem.
+  spec:
+    - Cada requisito/critério deve rastrear a um requisito do PRD (RN/RF/RB) ou a uma pergunta aberta.
+    - Não introduza requisitos ausentes do PRD sem marcá-los como decisão a validar.
+    - Referencie o PRD de origem.
+  tasks:
+    - Quebre as tarefas a partir dos critérios de aceite e do escopo do PRD.
+    - Não crie tarefas para itens fora do escopo (não objetivos) do PRD.

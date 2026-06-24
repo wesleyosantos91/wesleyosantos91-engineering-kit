@@ -1,0 +1,122 @@
+<!--
+  ============================================================================
+  EXEMPLO (NÃO aplicado automaticamente) — Plugins de qualidade para o pom.xml
+  ============================================================================
+  Este arquivo é uma PROPOSTA. Não foi aplicado ao pom.xml para não arriscar
+  quebrar o build (compatibilidade de versões com Java 25 / Spring Boot 4 deve
+  ser validada por você). Copie os blocos desejados para <build><plugins> e
+  valide com:  ./mvnw -q -DskipTests verify
+
+  Cobre: Spotless, Checkstyle, JaCoCo (>=90%), PIT (>=90%).
+  ArchUnit é dependência de teste (ver config/archunit/architecture-rules.md).
+  Confirme cada <version> contra o repositório central antes de fixar.
+  ============================================================================
+-->
+<plugins>
+
+  <!-- Spotless: formatação Java (+ markdown/yaml opcional) ----------------->
+  <plugin>
+    <groupId>com.diffplug.spotless</groupId>
+    <artifactId>spotless-maven-plugin</artifactId>
+    <version><!-- valide a versão estável mais recente --></version>
+    <configuration>
+      <java>
+        <googleJavaFormat/>           <!-- ou <palantirJavaFormat/> -->
+        <removeUnusedImports/>
+        <trimTrailingWhitespace/>
+        <endWithNewline/>
+        <importOrder/>
+      </java>
+      <markdown><includes><include>**/*.md</include></includes><flexmark/></markdown>
+      <yaml><includes><include>**/*.yaml</include><include>**/*.yml</include></includes><jackson/></yaml>
+    </configuration>
+    <executions>
+      <execution><goals><goal>check</goal></goals><phase>verify</phase></execution>
+    </executions>
+  </plugin>
+
+  <!-- Checkstyle Java 25 ---------------------------------------------------->
+  <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-checkstyle-plugin</artifactId>
+    <version><!-- valide a versão estável mais recente --></version>
+    <configuration>
+      <configLocation>config/checkstyle/checkstyle-java25.xml</configLocation>
+      <suppressionsLocation>config/checkstyle/suppressions.xml</suppressionsLocation>
+      <consoleOutput>true</consoleOutput>
+      <failsOnError>true</failsOnError>
+      <violationSeverity>error</violationSeverity>
+      <includeTestSourceDirectory>true</includeTestSourceDirectory>
+    </configuration>
+    <executions>
+      <execution><id>checkstyle</id><phase>validate</phase><goals><goal>check</goal></goals></execution>
+    </executions>
+  </plugin>
+
+  <!-- JaCoCo: cobertura mínima 90% (line + branch) -------------------------->
+  <plugin>
+    <groupId>org.jacoco</groupId>
+    <artifactId>jacoco-maven-plugin</artifactId>
+    <version><!-- valide a versão estável mais recente --></version>
+    <executions>
+      <execution><id>prepare-agent</id><goals><goal>prepare-agent</goal></goals></execution>
+      <execution><id>report</id><phase>verify</phase><goals><goal>report</goal></goals></execution>
+      <execution>
+        <id>check</id><phase>verify</phase><goals><goal>check</goal></goals>
+        <configuration>
+          <rules>
+            <rule>
+              <element>BUNDLE</element>
+              <limits>
+                <limit><counter>LINE</counter><value>COVEREDRATIO</value><minimum>0.90</minimum></limit>
+                <limit><counter>BRANCH</counter><value>COVEREDRATIO</value><minimum>0.90</minimum></limit>
+              </limits>
+            </rule>
+          </rules>
+          <excludes>
+            <exclude>**/*Application.*</exclude>
+            <exclude>**/config/**</exclude>
+            <exclude>**/dto/**</exclude>
+          </excludes>
+        </configuration>
+      </execution>
+    </executions>
+  </plugin>
+
+  <!-- PIT Mutation Testing: score mínimo 90% -------------------------------->
+  <plugin>
+    <groupId>org.pitest</groupId>
+    <artifactId>pitest-maven</artifactId>
+    <version><!-- valide a versão estável mais recente --></version>
+    <dependencies>
+      <dependency>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-junit5-plugin</artifactId>
+        <version><!-- compatível com pitest-maven --></version>
+      </dependency>
+    </dependencies>
+    <configuration>
+      <targetClasses>
+        <param><!-- ex: __BASE_PACKAGE__.domain.* -->*</param>
+      </targetClasses>
+      <mutationThreshold>90</mutationThreshold>
+      <coverageThreshold>0</coverageThreshold>
+      <outputFormats><outputFormat>XML</outputFormat><outputFormat>HTML</outputFormat></outputFormats>
+      <excludedClasses>
+        <param>**.*Application</param>
+        <param>**.config.*</param>
+        <param>**.dto.*</param>
+      </excludedClasses>
+    </configuration>
+  </plugin>
+
+</plugins>
+
+<!--
+  Dependências de teste sugeridas (em <dependencies>, scope test):
+
+  org.junit.jupiter:junit-jupiter            (já vem via spring-boot-starter-test)
+  com.tngtech.archunit:archunit-junit5       (ArchUnit)
+  org.testcontainers:junit-jupiter           (testes de integração)
+  io.cucumber:cucumber-java + cucumber-junit-platform-engine  (BDD, opcional)
+-->

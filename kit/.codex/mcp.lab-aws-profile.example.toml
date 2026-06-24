@@ -1,0 +1,8 @@
+# Exemplo de profile Codex para laboratorio AWS sandbox.
+# Copie para ~/.codex/lab-aws-profile.config.toml.
+# Use somente profile AWS sandbox, nunca producao.
+
+[mcp_servers.aws-pricing-sandbox]
+command = "uvx"
+args = ["awslabs.aws-pricing-mcp-server@latest"]
+env = { AWS_PROFILE = "sandbox", AWS_REGION = "us-east-1" }

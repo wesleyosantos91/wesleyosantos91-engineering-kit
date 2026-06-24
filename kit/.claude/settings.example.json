@@ -1,0 +1,25 @@
+{
+  "//": "Exemplo de settings do Claude Code para este harness. Copie para .claude/settings.local.json e ajuste. NÃO é aplicado automaticamente.",
+  "permissions": {
+    "allow": [
+      "Bash(bash scripts/ai/*.sh)",
+      "Bash(bash scripts/quality/*.sh)",
+      "Bash(./mvnw *)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)"
+    ],
+    "deny": [
+      "Bash(rm -rf*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean -fdx*)",
+      "Bash(docker system prune*)",
+      "Bash(terraform apply*)",
+      "Bash(kubectl delete*)",
+      "Bash(aws * delete*)"
+    ]
+  },
+  "env": {
+    "//": "Use modo conciso e preserve headroom; ver .ai/rules/token-economy.md"
+  }
+}

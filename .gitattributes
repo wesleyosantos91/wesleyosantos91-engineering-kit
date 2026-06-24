@@ -1,0 +1,10 @@
+# Normaliza fim de linha. Scripts shell SEMPRE em LF (rodam no DevContainer Linux).
+* text=auto eol=lf
+*.sh    text eol=lf
+*.bash  text eol=lf
+
+# Binários (não mexer)
+*.ttf   binary
+*.png   binary
+*.jpg   binary
+*.ico   binary

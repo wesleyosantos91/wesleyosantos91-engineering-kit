@@ -1,0 +1,11 @@
+# Exemplo de profile Codex para laboratorio local com LocalStack.
+# Copie para ~/.codex/lab-localstack-profile.config.toml.
+# Requer LOCALSTACK_AUTH_TOKEN no ambiente.
+
+[mcp_servers.localstack-lab]
+command = "bash"
+args = ["scripts/mcp/localstack.sh"]
+env = { MCP_ANALYTICS_DISABLED = "1", MAIN_CONTAINER_NAME = "localstack-main" }
+env_vars = ["LOCALSTACK_AUTH_TOKEN"]
+startup_timeout_sec = 30
+tool_timeout_sec = 120

@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+  "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+  "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<!--
+  Checkstyle ruleset focado em Java 25.
+  Prioriza legibilidade, organização de imports, complexidade controlada e
+  nomenclatura. NÃO exige Javadoc em todos os métodos (apenas onde fizer sentido).
+  Use com config/checkstyle/suppressions.xml.
+-->
+<module name="Checker">
+  <property name="charset" value="UTF-8"/>
+  <property name="severity" value="error"/>
+  <property name="fileExtensions" value="java, properties, xml"/>
+
+  <!-- Suppressions externas -->
+  <module name="SuppressionFilter">
+    <property name="file" value="${checkstyle.suppressions.file}" default=""/>
+    <property name="optional" value="true"/>
+  </module>
+
+  <!-- Arquivo -->
+  <module name="NewlineAtEndOfFile"/>
+  <module name="FileTabCharacter">
+    <property name="eachLine" value="true"/>
+  </module>
+  <module name="LineLength">
+    <property name="max" value="140"/>
+    <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|@see"/>
+  </module>
+  <module name="RegexpSingleline">
+    <property name="format" value="\s+$"/>
+    <property name="message" value="Espaço em branco no fim da linha."/>
+  </module>
+
+  <module name="TreeWalker">
+
+    <!-- Imports -->
+    <module name="AvoidStarImport"/>
+    <module name="UnusedImports">
+      <property name="processJavadoc" value="true"/>
+    </module>
+    <module name="RedundantImport"/>
+    <module name="IllegalImport"/>
+    <module name="CustomImportOrder">
+      <property name="customImportOrderRules"
+                value="STATIC###STANDARD_JAVA_PACKAGE###THIRD_PARTY_PACKAGE"/>
+      <property name="sortImportsInGroupAlphabetically" value="true"/>
+      <property name="separateLineBetweenGroups" value="true"/>
+    </module>
+
+    <!-- Tamanho / complexidade -->
+    <module name="MethodLength">
+      <property name="max" value="80"/>
+      <property name="countEmpty" value="false"/>
+    </module>
+    <module name="ParameterNumber">
+      <property name="max" value="7"/>
+    </module>
+    <module name="CyclomaticComplexity">
+      <property name="max" value="12"/>
+    </module>
+    <module name="NPathComplexity">
+      <property name="max" value="200"/>
+    </module>
+    <module name="NestedIfDepth">
+      <property name="max" value="3"/>
+    </module>
+    <module name="ReturnCount">
+      <property name="max" value="5"/>
+      <property name="maxForVoid" value="3"/>
+    </module>
+
+    <!-- Encapsulamento -->
+    <module name="VisibilityModifier">
+      <property name="protectedAllowed" value="true"/>
+      <property name="allowPublicFinalFields" value="false"/>
+    </module>
+
+    <!-- Estrutura de arquivo -->
+    <module name="OneTopLevelClass"/>
+    <module name="OuterTypeFilename"/>
+
+    <!-- Nomenclatura -->
+    <module name="PackageName">
+      <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+    </module>
+    <module name="TypeName"/>
+    <module name="MemberName"/>
+    <module name="MethodName"/>
+    <module name="ConstantName"/>
+    <module name="LocalVariableName"/>
+    <module name="ParameterName"/>
+    <module name="StaticVariableName"/>
+
+    <!-- Blocos / fluxo -->
+    <module name="NeedBraces"/>
+    <module name="EmptyBlock">
+      <property name="option" value="text"/>
+    </module>
+    <module name="FallThrough"/>
+    <module name="MissingSwitchDefault"/>
+    <module name="EqualsHashCode"/>
+    <module name="SimplifyBooleanExpression"/>
+    <module name="SimplifyBooleanReturn"/>
+
+    <!-- Modificadores / espaçamento -->
+    <module name="ModifierOrder"/>
+    <module name="RedundantModifier"/>
+    <module name="WhitespaceAround">
+      <property name="allowEmptyConstructors" value="true"/>
+      <property name="allowEmptyMethods" value="true"/>
+      <property name="allowEmptyTypes" value="true"/>
+      <property name="allowEmptyLambdas" value="true"/>
+    </module>
+    <module name="NoWhitespaceBefore"/>
+    <module name="ParenPad"/>
+    <module name="OperatorWrap">
+      <property name="option" value="nl"/>
+    </module>
+
+    <!-- Boas práticas -->
+    <module name="FinalClass"/>
+    <module name="HideUtilityClassConstructor"/>
+    <module name="OneStatementPerLine"/>
+    <module name="UpperEll"/>
+    <module name="ArrayTypeStyle"/>
+
+  </module>
+</module>

@@ -1,0 +1,57 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "bash",
+      "args": [
+        "scripts/mcp/context7.sh"
+      ]
+    },
+    "springdocs": {
+      "command": "bash",
+      "args": [
+        "scripts/mcp/springdocs.sh"
+      ],
+      "env": {
+        "NODE_OPTIONS": "--max-old-space-size=4096",
+        "REQUEST_TIMEOUT": "15000",
+        "MAX_RETRIES": "3"
+      }
+    },
+    "aws-docs": {
+      "command": "bash",
+      "args": [
+        "scripts/mcp/aws-docs.sh"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      }
+    },
+    "terraform-registry": {
+      "command": "bash",
+      "args": [
+        "scripts/mcp/terraform-registry.sh"
+      ]
+    },
+    "aws-pricing-sandbox": {
+      "command": "bash",
+      "args": [
+        "scripts/mcp/aws-pricing-sandbox.sh"
+      ],
+      "env": {
+        "AWS_PROFILE": "sandbox",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      }
+    },
+    "localstack-lab": {
+      "command": "bash",
+      "args": [
+        "scripts/mcp/localstack.sh"
+      ],
+      "env": {
+        "MCP_ANALYTICS_DISABLED": "1",
+        "MAIN_CONTAINER_NAME": "localstack-main"
+      }
+    }
+  }
+}

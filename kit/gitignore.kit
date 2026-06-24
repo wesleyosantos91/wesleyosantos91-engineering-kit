@@ -1,0 +1,54 @@
+HELP.md
+target/
+.env
+.env.*
+!.env.example
+.localstack/
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### AI harness config is versioned:
+### .agents/, .ai/ (except reports), .claude/ and .codex/
+### Ignore only local/generated AI state.
+.rtk/
+.ai/reports/
+.claude/settings.local.json
+
+### Project-specific SDD/OpenSpec artifacts
+### Keep openspec/config.yaml versioned as reusable chassis config.
+openspec/changes/
+openspec/specs/

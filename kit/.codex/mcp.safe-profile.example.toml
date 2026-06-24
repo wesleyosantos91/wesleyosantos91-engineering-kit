@@ -1,0 +1,25 @@
+# Exemplo de profile Codex seguro.
+# Copie para ~/.codex/safe-profile.config.toml.
+# Secrets devem vir de variaveis de ambiente locais.
+
+[mcp_servers.context7]
+command = "bash"
+args = ["scripts/mcp/context7.sh"]
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
+[mcp_servers.springdocs]
+command = "bash"
+args = ["scripts/mcp/springdocs.sh"]
+env = { NODE_OPTIONS = "--max-old-space-size=4096", REQUEST_TIMEOUT = "15000", MAX_RETRIES = "3" }
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
+[mcp_servers.aws-docs]
+command = "uvx"
+args = ["awslabs.aws-documentation-mcp-server@latest"]
+env = { FASTMCP_LOG_LEVEL = "ERROR" }
+
+[mcp_servers.terraform-registry]
+command = "docker"
+args = ["run", "-i", "--rm", "hashicorp/terraform-mcp-server:1.0.0", "--toolsets=registry"]

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+  "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+  "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<!--
+  Supressões pontuais e justificadas. Mantenha o mínimo possível.
+  Cada supressão deve ter um comentário explicando o porquê.
+-->
+<suppressions>
+  <!-- Código gerado: não aplicar estilo a fontes geradas. -->
+  <suppress files="[/\\]generated[/\\]" checks=".*"/>
+  <suppress files="[/\\]target[/\\]" checks=".*"/>
+  <suppress files="[/\\]build[/\\]" checks=".*"/>
+
+  <!-- Testes: complexidade/tamanho mais tolerantes em cenários de teste. -->
+  <suppress files="[/\\]src[/\\]test[/\\]" checks="MethodLength|MagicNumber|MultipleStringLiterals"/>
+
+  <!-- ArchUnit: idioma usa campos `static final` package-private em snake_case. -->
+  <suppress files="[/\\]architecture[/\\].*\.java$" checks="VisibilityModifier|ConstantName|HideUtilityClassConstructor"/>
+
+  <!-- Classe de bootstrap da aplicação (main). -->
+  <suppress files="Application\.java$" checks="HideUtilityClassConstructor|FinalClass"/>
+</suppressions>

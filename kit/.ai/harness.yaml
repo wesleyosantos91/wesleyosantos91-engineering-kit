@@ -1,0 +1,78 @@
+# AI Engineering Harness — manifesto central (vendor-neutral)
+# Lido por humanos e agentes. Não contém regra de negócio.
+version: 1
+
+project:
+  type: java
+  java_version: 25
+  build_tool: maven           # detectado: mvnw + pom.xml
+  framework: spring-boot      # detectado: org.springframework.boot 4.1.0
+  base_package: __BASE_PACKAGE__
+  layering: hexagonal-ddd-pragmatic
+  design_principles: [SOLID, hexagonal-architecture, pragmatic-ddd]
+
+agents:
+  claude_code:
+    instructions: CLAUDE.md
+    commands_dir: .claude/commands
+    prompts_dir: .ai/prompts/claude
+    settings_example: .claude/settings.example.json
+  codex_cli:
+    instructions: AGENTS.md
+    prompts_dir: .ai/prompts/codex
+
+workflow:
+  mandatory: inspect -> plan -> failing-test -> minimal-implementation -> refactor -> quality-gates -> report
+  tdd: required
+  bdd: when-business-behavior
+  solid: required-for-production-code
+
+quality_gates:
+  format:        { tool: spotless,   script: scripts/quality/format-check.sh, required: true }
+  style:         { tool: checkstyle, script: scripts/quality/checkstyle.sh,   config: config/checkstyle/checkstyle-java25.xml, required: true }
+  unit_tests:    { script: scripts/quality/test-unit.sh, required: true }
+  integration:   { script: scripts/quality/test-integration.sh, required: when-external-dependency }
+  bdd:           { script: scripts/quality/test-bdd.sh, required: when-business-behavior }
+  coverage:      { tool: jacoco, script: scripts/quality/jacoco.sh, min_line: 90, min_branch: 90, required: true }
+  mutation:      { tool: pit,    script: scripts/quality/mutation-test.sh, min_score: 90, required: true }
+  architecture:  { tool: archunit, script: scripts/quality/archunit.sh, fallback: scripts/quality/package-rules.sh, required: true }
+  orchestrator:  { script: scripts/quality/verify-all.sh, flags: [--fast, --full, --no-mutation, --no-integration, --no-bdd, --skip-coverage] }
+
+ai_scripts:
+  detect_project:     scripts/ai/detect-project.sh
+  preflight:          scripts/ai/preflight.sh
+  context_pack:       scripts/ai/context-pack.sh
+  context_check:      scripts/ai/opsx-context-check.sh
+  openspec_validate:  scripts/ai/openspec-validate.sh
+  task_report:        scripts/ai/task-report.sh
+
+specs:
+  openspec_dir: openspec           # detectado (schema: spec-driven)
+  prd_template: docs/product/PRD.template.md
+  flow: PRD -> openspec change/spec -> SDD/plano -> TDD -> tests -> validate -> report
+
+reports_dir: .ai/reports
+
+safety:
+  never_run_without_confirmation:
+    - rm -rf
+    - git reset --hard
+    - git clean -fdx
+    - docker system prune -a
+    - drop database
+    - terraform apply
+    - kubectl delete
+    - aws *delete*
+  never_expose: [tokens, secrets, .env, aws-credentials, certificates, private-keys]
+  build_changes: propose-and-example   # nunca alterar pom/gradle com risco sem proposta + .example
+  no_global_install: true
+  no_delete_existing_files: true
+  no_package_restructure_without_approval: true
+
+token_economy:
+  tools_optional: [repomix, rtk]
+  principles:
+    - surgical-context-per-task
+    - preserve-headroom
+    - summarize-large-logs-keep-stacktrace
+    - never-compress-code-semantics

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Perfil de formatação Eclipse JDT para o harness (Java 25-friendly).
+  Usado pelo Spotless (spotless-maven-plugin) para formatar Java sem depender de
+  internals do javac (ao contrário de google-java-format). Mantém consistência com
+  o Checkstyle: indentação por ESPAÇOS (não TAB).
+-->
+<profiles version="21">
+  <profile kind="CodeFormatterProfile" name="java25-harness" version="21">
+    <setting id="org.eclipse.jdt.core.formatter.tabulation.char" value="space"/>
+    <setting id="org.eclipse.jdt.core.formatter.tabulation.size" value="4"/>
+    <setting id="org.eclipse.jdt.core.formatter.indentation.size" value="4"/>
+    <setting id="org.eclipse.jdt.core.formatter.use_tabs_only_for_leading_indentations" value="false"/>
+    <setting id="org.eclipse.jdt.core.formatter.lineSplit" value="140"/>
+    <setting id="org.eclipse.jdt.core.formatter.continuation_indentation" value="2"/>
+    <setting id="org.eclipse.jdt.core.formatter.insert_new_line_at_end_of_file_if_missing" value="insert"/>
+  </profile>
+</profiles>
