@@ -1,16 +1,61 @@
-# wesleyosantos91-engineering-kit
+<div align="center">
 
-Meu **kit de engenharia** reutilizável: skills, agents, commands, hooks, DevContainer,
-quality gates (Java 25), MCPs e scripts que uso no dia a dia — empacotados para serem
-consumidos por **qualquer projeto** como um **git submodule**.
+# 🧰 wesleyosantos91-engineering-kit
+
+**Meu kit de engenharia reutilizável** — skills, agents, commands, hooks, DevContainer
+poliglota, quality gates, MCPs e scripts — consumido por **qualquer projeto** como um
+**git submodule**, com **uma fonte única** para atualizar tudo de uma vez.
+
+<br/>
+
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-1f6feb?logo=creativecommons&logoColor=white)](LICENSE)
+[![Consumido como](https://img.shields.io/badge/uso-git%20submodule-f05032?logo=git&logoColor=white)](#-quickstart)
+[![DevContainer](https://img.shields.io/badge/DevContainer-pronto-2496ED?logo=docker&logoColor=white)](#o-que-vem-no-kit-kit)
+[![Mantido por](https://img.shields.io/badge/autor-Wesley%20Oliveira%20Santos-24292e?logo=github&logoColor=white)](https://github.com/wesleyosantos91)
+
+**Toolchains do DevContainer**
+
+![Java](https://img.shields.io/badge/Java-25-007396?logo=openjdk&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-3.9-C71A36?logo=apachemaven&logoColor=white)
+![Gradle](https://img.shields.io/badge/Gradle-9-02303A?logo=gradle&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
+![Go](https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white)
+![Rust](https://img.shields.io/badge/Rust-1.96-000000?logo=rust&logoColor=white)
+![Terraform](https://img.shields.io/badge/Terraform-1.x-7B42BC?logo=terraform&logoColor=white)
+![AWS CLI](https://img.shields.io/badge/AWS%20CLI-2.x-232F3E?logo=amazonwebservices&logoColor=white)
+![Node](https://img.shields.io/badge/Node-22-339933?logo=nodedotjs&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker--in--Docker-on-2496ED?logo=docker&logoColor=white)
+
+**Testes de carga & IA**
+
+![k6](https://img.shields.io/badge/k6-v2.0-7D64FF?logo=k6&logoColor=white)
+![JMeter](https://img.shields.io/badge/JMeter-5.6-D22128?logo=apachejmeter&logoColor=white)
+![Claude Code](https://img.shields.io/badge/Claude%20Code-CLI-D97757?logo=anthropic&logoColor=white)
+![Codex](https://img.shields.io/badge/Codex-CLI-412991?logo=openai&logoColor=white)
+![OpenSpec](https://img.shields.io/badge/OpenSpec-spec--driven-0aa)
+![RTK](https://img.shields.io/badge/RTK-token--saver-444)
+![Caveman](https://img.shields.io/badge/Caveman-token--saver-555)
+
+</div>
 
 > **Objetivo:** parar de reconfigurar o ambiente do zero a cada projeto/máquina nova.
-> Adiciono o kit uma vez, e mantenho **uma fonte única**: ao evoluir o kit, todos os
-> repositórios que o usam recebem a atualização com um comando — sem recopiar nada.
+> Adiciono o kit uma vez e mantenho **uma fonte única**: ao evoluir o kit, todos os
+> repositórios que o usam recebem a atualização com **um comando** — sem recopiar nada.
 
 Projeto **independente e autossuficiente** — não depende de nenhum outro repositório.
 O escopo é **só configuração**: harness de IA + DevContainer poliglota + ferramentas.
 **Sem** código de aplicação.
+
+## 📑 Índice
+
+- [DevContainer — toolchains](#devcontainer--tudo-pronto-para-estudar-fazer-pocs-e-desenvolver)
+- [Como funciona (a "fonte única")](#-como-funciona-a-fonte-única)
+- [Quickstart](#-quickstart)
+- [Atualizar o kit (puxar a evolução)](#-atualizar-o-kit-puxar-a-evolução)
+- [Scripts](#-scripts)
+- [O que vem no kit](#o-que-vem-no-kit-kit)
+- [Documentação detalhada](#-documentação-detalhada)
+- [Licença](#-licença)
 
 ### DevContainer — tudo pronto para estudar, fazer POCs e desenvolver
 
@@ -32,7 +77,15 @@ O DevContainer já sobe com as toolchains que uso no dia a dia:
 
 ---
 
-## Como funciona (a "fonte única")
+## 🔌 Como funciona (a "fonte única")
+
+```mermaid
+flowchart LR
+  kit["engineering-kit<br/>(submódulo)"] -->|symlink| root[".claude / .codex / .agents<br/>scripts / .mcp.json / ... na raiz"]
+  kit -->|scaffold + placeholders| proj["CLAUDE.md / AGENTS.md<br/>devcontainer.json"]
+  upd["git submodule update --remote"] -->|novo commit do kit| kit
+  root -.->|reflete na hora| tools["Claude Code · Codex · skills · hooks"]
+```
 
 O segredo é **symlink**:
 
@@ -49,7 +102,7 @@ Detalhes e a tabela completa do que é symlink vs cópia: [`docs/architecture.md
 
 ---
 
-## Quickstart
+## 🚀 Quickstart
 
 ```bash
 # 1. adicionar o kit como submódulo
@@ -99,7 +152,7 @@ Passo a passo detalhado: [`docs/getting-started.md`](docs/getting-started.md).
 
 ---
 
-## Atualizar o kit (puxar a evolução)
+## 🔄 Atualizar o kit (puxar a evolução)
 
 ```bash
 # dentro do projeto consumidor
@@ -113,7 +166,7 @@ para criar symlinks de **itens novos** que o kit passou a oferecer. Mais em
 
 ---
 
-## Scripts
+## 🧩 Scripts
 
 | Script | O que faz |
 |---|---|
@@ -159,7 +212,23 @@ Projetos que usam o kit puxam a evolução com `bash .engineering-kit/update.sh`
 
 ---
 
-## Licença
+## 📚 Documentação detalhada
+
+Guias passo a passo em [`docs/`](docs/):
+
+| Documento | O que cobre |
+|---|---|
+| [`docs/getting-started.md`](docs/getting-started.md) | Adicionar o submódulo, rodar o `bootstrap.sh`, abrir o DevContainer, flags, verificação. |
+| [`docs/updating.md`](docs/updating.md) | Como o `git submodule update --remote` propaga skills/configs novas (e o que exige re-rodar). |
+| [`docs/architecture.md`](docs/architecture.md) | Decisão symlink × cópia, detecção de placeholders, layout do repositório. |
+| [`docs/windows.md`](docs/windows.md) | Symlinks no Windows (Developer Mode / `core.symlinks`) e como evitar o problema de CRLF. |
+
+E dentro do kit, [`kit/docs/ai-harness/`](kit/docs/ai-harness/) documenta o harness de IA
+(agents, skills, MCP, quality gates, OpenSpec/SDD).
+
+---
+
+## 📄 Licença
 
 **CC BY-NC-SA 4.0** (Creative Commons Attribution-NonCommercial-ShareAlike 4.0) —
 ver [`LICENSE`](LICENSE).
