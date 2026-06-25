@@ -38,28 +38,40 @@ poliglota, quality gates, MCPs e scripts — consumido por **qualquer projeto** 
 
 </div>
 
-> **Objetivo:** parar de reconfigurar o ambiente do zero a cada projeto/máquina nova.
-> Adiciono o kit uma vez e mantenho **uma fonte única**: ao evoluir o kit, todos os
-> repositórios que o usam recebem a atualização com **um comando** — sem recopiar nada.
+> **Pare de reconfigurar o ambiente do zero a cada projeto/máquina.** Adicione o kit uma
+> vez e mantenha **uma fonte única**: ao evoluir o kit, todos os repositórios que o usam
+> se atualizam com **um comando** — sem recopiar nada.
 
-Projeto **independente e autossuficiente** — não depende de nenhum outro repositório.
-O escopo é **só configuração**: harness de IA + DevContainer poliglota + ferramentas.
-**Sem** código de aplicação.
+Projeto **independente e autossuficiente** (não depende de nenhum outro repositório). O
+escopo é **só configuração**: harness de IA + DevContainer poliglota + ferramentas —
+**sem** código de aplicação.
+
+## ✨ Destaques
+
+- 🔗 **Consumo via git submodule** — `bootstrap.sh` popula a raiz do projeto com symlinks; atualizar é só `git submodule update --remote`.
+- 🧰 **DevContainer poliglota** — Java/Maven/Gradle, Python, Go, Rust, Terraform, AWS CLI, Node, Docker-in-Docker, prontos para estudar, POCs e dev.
+- 🤖 **Harness de IA** — agents, skills, commands e hooks para **Claude Code e Codex**, com MCPs registrados.
+- ⚡ **Token-savers** — RTK e Caveman iniciados para Claude **e** Codex.
+- ✅ **Quality gates Java 25** — Spotless, Checkstyle, JaCoCo, PIT, ArchUnit (opt-in).
+- 📐 **Spec-driven** — fluxo PRD → OpenSpec → SDD → TDD.
+- 🧪 **Teste de carga** — k6 e JMeter.
 
 ## 📑 Índice
 
-- [DevContainer — toolchains](#devcontainer--tudo-pronto-para-estudar-fazer-pocs-e-desenvolver)
+- [Destaques](#-destaques)
+- [DevContainer poliglota](#-devcontainer-poliglota)
 - [Como funciona (a "fonte única")](#-como-funciona-a-fonte-única)
 - [Quickstart](#-quickstart)
-- [Atualizar o kit (puxar a evolução)](#-atualizar-o-kit-puxar-a-evolução)
+- [Atualizar o kit](#-atualizar-o-kit-puxar-a-evolução)
 - [Scripts](#-scripts)
 - [O que vem no kit](#o-que-vem-no-kit-kit)
-- [Documentação detalhada](#-documentação-detalhada)
+- [Documentação](#-documentação-detalhada)
+- [Contribuindo](#-contribuindo)
 - [Licença](#-licença)
 
-### DevContainer — tudo pronto para estudar, fazer POCs e desenvolver
+## 🧰 DevContainer poliglota
 
-O DevContainer já sobe com as toolchains que uso no dia a dia:
+O DevContainer já sobe com as toolchains do dia a dia — pronto para estudar, fazer POCs e desenvolver:
 
 | Toolchain | Como vem |
 |---|---|
@@ -228,6 +240,21 @@ E dentro do kit, [`kit/docs/ai-harness/`](kit/docs/ai-harness/) documenta o harn
 (agents, skills, MCP, quality gates, OpenSpec/SDD).
 
 ---
+
+## 🤝 Contribuindo
+
+Kit pessoal, mas sugestões são bem-vindas:
+
+1. Abra uma **issue** descrevendo a ideia/bug.
+2. Para mudanças no payload, edite em `kit/` e rode os validadores antes do PR:
+   ```bash
+   cd kit && bash scripts/ai/validate-skills.sh && \
+     bash scripts/ai/validate-claude-agents.sh && bash scripts/ai/validate-codex-agents.sh
+   ```
+3. Mantenha **paridade Claude × Codex** (skill nova em `.claude/skills/` **e** `.agents/skills/`).
+4. Scripts em **LF** (já garantido pelo `.gitattributes`); siga o estilo dos arquivos vizinhos.
+
+Sob **CC BY-SA 4.0**: ao contribuir, você concorda em licenciar sob a mesma licença.
 
 ## 📄 Licença
 

@@ -84,6 +84,74 @@ Validar as skills: `bash scripts/ai/validate-skills.sh`
 
 ---
 
+## 🔎 Em detalhe: os fluxos principais
+
+### 📝 `/prd-produto` — Product Requirements Document
+
+Transforma uma **ideia / dor / oportunidade / épico / feature** num **PRD** focado em
+**negócio e produto** (não em arquitetura/código). O PRD vira a **fonte de verdade** que
+alimenta as specs/SDD via OpenSpec.
+
+**Modos** (passe o modo antes da descrição; default `auto`):
+
+| Modo | O que entrega |
+|---|---|
+| `auto` | Escolhe o formato pelo tamanho/clareza da demanda. |
+| `discovery` | **Discovery Brief**: problema, hipóteses, perguntas de descoberta. |
+| `lean` | **PRD Lean**: escopo enxuto, critérios essenciais (bom p/ POC/MVP). |
+| `completo` | **PRD Completo**: contexto, requisitos (RN/RF/RB), critérios de aceite, métricas, riscos, *Definition of Ready*. |
+| `mvp` | Recorte de **MVP** a partir de um PRD/ideia maior. |
+| `review` | Revisa um PRD existente (lacunas, ambiguidades, prontidão). |
+| `perguntas` | Só as **perguntas de refinamento** que faltam responder. |
+| `salvar` | Salva em `docs/prd/<iniciativa>.md` e referencia nos índices. |
+| `referenciar` | Liga o PRD em `CLAUDE.md` / `AGENTS.md` / `docs/prd/README.md`. |
+| `pre-sdd` | Valida se o PRD está pronto p/ virar uma OpenSpec change. |
+
+**Exemplos**
+```text
+/prd-produto  Quero um encurtador de links com expiração e métricas de cliques
+/prd-produto lean  Importar CSV de clientes e validar e-mails
+/prd-produto review docs/prd/encurtador-links.md
+/prd-produto mvp  docs/prd/encurtador-links.md
+```
+
+**Saída:** artefato do modo + **caminho sugerido** `docs/prd/<iniciativa>.md`, com premissas,
+perguntas abertas, riscos e métricas. No Codex, use a skill `$prd-produto`.
+
+> **Regra:** nenhuma spec/SDD é criada sem ler antes o PRD de origem. O PRD é referenciado
+> em `docs/prd/README.md`, `CLAUDE.md` e `AGENTS.md`.
+
+### 📐 `/opsx …` — OpenSpec (spec-driven)
+
+Fluxo OpenSpec, do PRD à entrega. Cadeia canônica:
+
+```text
+PRD (docs/prd/) ──/opsx propose──> OpenSpec change ──/opsx apply──> TDD ──/opsx archive
+                                   (proposal+design+tasks)                 (+ /opsx sync)
+```
+
+| Comando | Fase | O que faz |
+|---|---|---|
+| `/opsx explore` | Pensar | Modo "parceiro de raciocínio": investiga, esclarece requisitos. **Não implementa** — pode criar artefatos OpenSpec. |
+| `/opsx propose` | Planejar | Cria a **change** e gera os artefatos: `proposal.md` (o quê & porquê), `design.md` (como), `tasks`. Lê o **PRD** como base (`openspec/config.yaml`). |
+| `/opsx apply` | Implementar | Implementa as **tasks** da change (via TDD). Ex.: `/opsx apply add-auth`. |
+| `/opsx archive` | Finalizar | Arquiva a change concluída. Ex.: `/opsx archive add-auth`. |
+| `/opsx sync` | Specs | Faz merge inteligente das **delta specs** da change nas specs principais. |
+
+**Exemplo de ponta a ponta**
+```text
+/prd-produto completo  Autenticação por e-mail + senha com bloqueio após 5 tentativas
+/opsx propose                  # cria a change lendo o PRD
+/opsx apply <nome-da-change>    # implementa as tasks (TDD)
+bash scripts/ai/openspec-validate.sh
+/opsx archive <nome-da-change>  # arquiva
+```
+
+> O **SDD/plano técnico** vive no `design.md` da change. As mudanças de spec ficam em
+> `openspec/changes/` até serem sincronizadas/arquivadas.
+
+---
+
 ## ⚡ RTK (Rust Token Killer) — economia de tokens (Claude **e** Codex)
 
 Prefixe comandos com `rtk` para sair compacto (Claude usa hook automático; no Codex o
