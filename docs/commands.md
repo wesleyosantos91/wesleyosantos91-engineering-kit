@@ -1,7 +1,21 @@
-# 🧭 Comandos & atalhos — cheatsheet do engineering-kit
+# 🧭 Comandos & atalhos
 
-Referência rápida de tudo que o kit traz, para acelerar a adoção. Funciona para
-**Claude Code** e **Codex** (cada um com seu mecanismo).
+[![⬅ README](https://img.shields.io/badge/⬅-README-1f6feb?style=flat-square)](../README.md)
+[![CC BY-SA 4.0](https://img.shields.io/badge/license-CC%20BY--SA%204.0-1f6feb?style=flat-square)](../LICENSE)
+
+**📖 Docs:** **Comandos** · [Getting Started](getting-started.md) · [Atualizar](updating.md) · [Arquitetura](architecture.md) · [Windows](windows.md)
+
+Cheatsheet de tudo que o kit traz, para acelerar a adoção — funciona para **Claude Code**
+e **Codex** (cada um com seu mecanismo).
+
+## 📑 Índice
+
+- [Ciclo de vida do kit](#-ciclo-de-vida-do-kit)
+- [Claude Code](#-claude-code) · [Codex](#-codex--prompts-e-skills) · [Skills](#-skills)
+- [Em detalhe: prd-produto e opsx](#-em-detalhe-os-fluxos-principais)
+- [RTK](#-rtk) · [Caveman](#-caveman)
+- [Qualidade](#-qualidade) · [Teste de carga](#-teste-de-carga)
+- [OpenSpec e relatórios](#-openspec-e-relatórios) · [MCPs](#-mcps)
 
 ---
 
@@ -16,7 +30,9 @@ bash .engineering-kit/uninstall.sh      # remove symlinks/scaffold (--purge-copi
 
 ---
 
-## 🟠 Claude Code — slash commands (`.claude/commands/`)
+## 🟠 Claude Code
+
+Slash commands em `.claude/commands/`:
 
 | Comando | O que faz |
 |---|---|
@@ -63,7 +79,9 @@ Invoque com `/skills` ou mencionando `$nome` (ex.: `$prd-produto`).
 
 ---
 
-## 🧠 Skills (Claude `.claude/skills/` + Codex `.agents/skills/`)
+## 🧠 Skills
+
+Claude em `.claude/skills/` · Codex em `.agents/skills/`:
 
 | Skill | Para quê |
 |---|---|
@@ -152,7 +170,9 @@ bash scripts/ai/openspec-validate.sh
 
 ---
 
-## ⚡ RTK (Rust Token Killer) — economia de tokens (Claude **e** Codex)
+## ⚡ RTK
+
+**Rust Token Killer** — economia de tokens (Claude **e** Codex).
 
 Prefixe comandos com `rtk` para sair compacto (Claude usa hook automático; no Codex o
 `RTK.md` instrui o agente a usar `rtk`).
@@ -171,7 +191,9 @@ rtk init --show       # ver config atual
 
 ---
 
-## 🪨 Caveman — token-saver (Claude plugin + Codex skills)
+## 🪨 Caveman
+
+Token-saver (Claude plugin + Codex skills).
 
 ```text
 /caveman             # ativa o modo caveman na sessão (saída ultra-compacta)
@@ -184,7 +206,9 @@ No Claude Code ativa via plugin (hook de sessão); no Codex via skills em `.agen
 
 ---
 
-## ✅ Qualidade (Java 25) — `scripts/quality/`
+## ✅ Qualidade
+
+Java 25, via `scripts/quality/`:
 
 ```bash
 bash scripts/quality/verify-all.sh --fast   # format-check, checkstyle, unit, package-rules
@@ -217,7 +241,7 @@ jmeter -n -t plano.jmx -l resultado.jtl
 
 ---
 
-## 📐 OpenSpec / SDD & relatórios
+## 📐 OpenSpec e relatórios
 
 ```bash
 bash scripts/ai/detect-project.sh        # detecta build/linguagem/framework
@@ -234,7 +258,9 @@ Cadeia: **PRD** (`docs/prd/`, skill `prd-produto`) → **OpenSpec change** (`/op
 
 ---
 
-## 🔌 MCPs (Claude `.mcp.json` + Codex `~/.codex/config.toml`)
+## 🔌 MCPs
+
+Claude em `.mcp.json` · Codex em `~/.codex/config.toml`:
 
 `context7` · `springdocs` · `aws-docs` · `terraform-registry` · `aws-pricing-sandbox` ·
 `localstack-lab`. Registrados para os dois no DevContainer; no Claude, aprove na 1ª vez.

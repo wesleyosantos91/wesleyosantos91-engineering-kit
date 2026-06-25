@@ -1,6 +1,23 @@
-# Getting Started — adicionar o kit a um projeto
+# 🚀 Getting Started
+
+[![⬅ README](https://img.shields.io/badge/⬅-README-1f6feb?style=flat-square)](../README.md)
+[![CC BY-SA 4.0](https://img.shields.io/badge/license-CC%20BY--SA%204.0-1f6feb?style=flat-square)](../LICENSE)
+
+**📖 Docs:** [Comandos](commands.md) · **Getting Started** · [Atualizar](updating.md) · [Arquitetura](architecture.md) · [Windows](windows.md)
 
 Guia passo a passo para consumir o `wesleyosantos91-engineering-kit` como submódulo.
+
+## 📑 Índice
+
+- [Pré-requisitos](#pré-requisitos)
+- [Passo 1 — adicionar o submódulo](#passo-1--adicionar-o-submódulo)
+- [Passo 2 — popular a raiz (bootstrap)](#passo-2--popular-a-raiz-bootstrap)
+- [Passo 3 — versionar](#passo-3--versionar)
+- [Passo 4 — abrir no DevContainer](#passo-4--abrir-no-devcontainer)
+- [Passo 5 — clones futuros](#passo-5--clones-futuros-do-projeto)
+- [Verificação rápida](#verificação-rápida)
+
+---
 
 ## Pré-requisitos
 

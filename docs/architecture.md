@@ -1,4 +1,23 @@
-# Arquitetura — symlink vs cópia
+# 🏗️ Arquitetura
+
+[![⬅ README](https://img.shields.io/badge/⬅-README-1f6feb?style=flat-square)](../README.md)
+[![CC BY-SA 4.0](https://img.shields.io/badge/license-CC%20BY--SA%204.0-1f6feb?style=flat-square)](../LICENSE)
+
+**📖 Docs:** [Comandos](commands.md) · [Getting Started](getting-started.md) · [Atualizar](updating.md) · **Arquitetura** · [Windows](windows.md)
+
+Como o kit aplica suas configs no projeto: **symlink** (auto-sync) vs **cópia** (por-projeto).
+
+## 📑 Índice
+
+- [Por que dois mecanismos](#por-que-dois-mecanismos)
+- [Entrypoint: bootstrap.sh](#entrypoint-bootstrapsh)
+- [Como o install.sh decide](#como-o-installsh-decide)
+- [Arquivos por-projeto (copiados)](#arquivos-por-projeto-hoje-copiados)
+- [Caminhos relativos](#caminhos-relativos)
+- [Layout do repositório](#layout-do-repositório)
+- [Limites conhecidos](#limites-conhecidos)
+
+---
 
 ## Por que dois mecanismos
 

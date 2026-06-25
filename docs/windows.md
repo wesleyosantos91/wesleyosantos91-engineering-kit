@@ -1,10 +1,24 @@
-# Windows — symlinks
+# 🪟 Windows — symlinks
 
-O `install.sh` depende de **symlinks** para a "fonte única" funcionar. No Windows há um
-detalhe: o **Git Bash/MSYS** por padrão **copia** em vez de criar symlink — o que quebraria
-o auto-sync (o conteúdo copiado não acompanharia o `submodule update`).
+[![⬅ README](https://img.shields.io/badge/⬅-README-1f6feb?style=flat-square)](../README.md)
+[![CC BY-SA 4.0](https://img.shields.io/badge/license-CC%20BY--SA%204.0-1f6feb?style=flat-square)](../LICENSE)
 
-O `install.sh` força symlink nativo (`export MSYS=winsymlinks:nativestrict`) e **aborta com
+**📖 Docs:** [Comandos](commands.md) · [Getting Started](getting-started.md) · [Atualizar](updating.md) · [Arquitetura](architecture.md) · **Windows**
+
+## 📑 Índice
+
+- [Opção recomendada — DevContainer](#opção-recomendada--rodar-dentro-do-devcontainer)
+- [Rodar no host Windows (Git Bash)](#rodar-no-host-windows-git-bash)
+- [Sintoma típico](#sintoma-típico)
+- [Observação sobre clones](#observação-sobre-clones)
+
+---
+
+O `bootstrap.sh` (via `install.sh`) depende de **symlinks** para a "fonte única" funcionar.
+No Windows há um detalhe: o **Git Bash/MSYS** por padrão **copia** em vez de criar symlink —
+o que quebraria o auto-sync (o conteúdo copiado não acompanharia o `submodule update`).
+
+Os scripts forçam symlink nativo (`export MSYS=winsymlinks:nativestrict`) e **abortam com
 erro** se a criação cair em cópia, em vez de quebrar silenciosamente.
 
 ## Opção recomendada — rodar dentro do DevContainer

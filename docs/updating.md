@@ -1,4 +1,21 @@
-# Atualizar o kit (a "fonte única" na prática)
+# 🔄 Atualizar o kit
+
+[![⬅ README](https://img.shields.io/badge/⬅-README-1f6feb?style=flat-square)](../README.md)
+[![CC BY-SA 4.0](https://img.shields.io/badge/license-CC%20BY--SA%204.0-1f6feb?style=flat-square)](../LICENSE)
+
+**📖 Docs:** [Comandos](commands.md) · [Getting Started](getting-started.md) · **Atualizar** · [Arquitetura](architecture.md) · [Windows](windows.md)
+
+Como a "fonte única" funciona na prática: puxar a evolução do kit para os projetos.
+
+## 📑 Índice
+
+- [Modelo mental](#modelo-mental)
+- [Atualizar um projeto](#atualizar-um-projeto)
+- [Casos especiais](#casos-especiais)
+- [Fixar / reverter versão](#fixar--reverter-versão)
+- [Atualizar vários projetos de uma vez](#atualizar-vários-projetos-de-uma-vez)
+
+---
 
 ## Modelo mental
 
