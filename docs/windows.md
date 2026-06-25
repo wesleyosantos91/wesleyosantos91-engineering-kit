@@ -10,7 +10,8 @@ erro** se a criação cair em cópia, em vez de quebrar silenciosamente.
 ## Opção recomendada — rodar dentro do DevContainer
 
 O DevContainer é Linux: symlinks são nativos, sem nenhuma configuração. Abra o projeto no
-container ("Reopen in Container") e rode o `install.sh` lá. **É o caminho mais simples.**
+container ("Reopen in Container") e rode o `bootstrap.sh` lá (ou deixe o `postCreate`
+rodá-lo). **É o caminho mais simples.**
 
 ## Rodar no host Windows (Git Bash)
 
@@ -50,10 +51,10 @@ Se o `install.sh` abortar com:
 ERRO: '<arquivo>' não virou symlink (provável cópia do Git Bash sem Developer Mode).
 ```
 
-→ ligue o Developer Mode (ou rode no DevContainer) e rode o `install.sh` de novo.
+→ ligue o Developer Mode (ou rode no DevContainer) e rode o `bootstrap.sh` de novo.
 
 ## Observação sobre clones
 
 Ao clonar um projeto que já tem os symlinks commitados, o Git só os recria como symlinks
 de verdade se `core.symlinks=true` e o ambiente permitir. Caso contrário, rode o
-`install.sh` novamente após `git submodule update --init` para regenerá-los corretamente.
+`bootstrap.sh` novamente após `git submodule update --init` para regenerá-los corretamente.

@@ -14,6 +14,16 @@ Esses não podem ser uma referência compartilhada — cada projeto tem o seu. D
 | Config estável (skills, agents, commands, hooks, scripts, quality configs, devcontainer base) | **Symlink** → `.engineering-kit/kit/...` | Idêntico entre projetos | **Sim, automático** |
 | Config por-projeto (placeholders `__BASE_PACKAGE__`/`__PROJECT_NAME__`) | **Cópia + substituição** | Valor é único de cada projeto e editável | Não (é seu; ver `updating.md`) |
 
+## Entrypoint: `bootstrap.sh`
+
+O `bootstrap.sh` (na raiz do submódulo) é o que você roda / o que o `postCreate` do
+DevContainer chama. Ele orquestra:
+1. `install.sh --target <raiz do projeto>` → cria os symlinks + scaffold (regra abaixo);
+2. se estiver **dentro de um container**, `install-tools.sh` → instala toolchains/CLIs e
+   inicia RTK (Claude + Codex), Caveman, OpenSpec, MCPs.
+
+Fora do container, só o passo 1 roda (as ferramentas entram ao subir o DevContainer).
+
 ## Como o `install.sh` decide
 
 Para cada item do payload (`kit/`), o script verifica se ele **contém** algum placeholder
@@ -46,8 +56,10 @@ continuam válidos em qualquer máquina/clone, independente do caminho absoluto 
 
 ```
 wesleyosantos91-engineering-kit/
+├── bootstrap.sh                            # ENTRYPOINT: popula a raiz (+ instala tools no container)
 ├── install.sh / update.sh / uninstall.sh   # mecânica de symlink+scaffold
 ├── .gitattributes                          # força LF nos .sh (rodam no Linux)
+├── LICENSE                                 # CC BY-SA 4.0
 ├── docs/                                   # esta documentação
 └── kit/                                    # PAYLOAD (configs aplicadas ao projeto)
     ├── .claude/ .codex/ .agents/ .ai/ .devcontainer/

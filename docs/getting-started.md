@@ -5,84 +5,81 @@ Guia passo a passo para consumir o `wesleyosantos91-engineering-kit` como submó
 ## Pré-requisitos
 
 - `git` (com submódulos).
-- **Symlinks habilitados** no ambiente onde você roda o `install.sh`:
-  - **Linux/macOS / DevContainer:** nativo, nada a fazer (recomendado).
-  - **Windows (Git Bash):** ativar **Developer Mode** — veja [`windows.md`](windows.md).
 - Para abrir no container: Docker + VS Code com a extensão *Dev Containers* (ou a CLI
   `devcontainer`).
+- **Symlinks** habilitados onde você roda o `bootstrap.sh`:
+  - **Linux/macOS / DevContainer:** nativo (recomendado).
+  - **Windows (Git Bash):** ativar **Developer Mode** — ver [`windows.md`](windows.md).
 
 ---
 
 ## Passo 1 — adicionar o submódulo
 
-Escolha um caminho para o submódulo (sugestão: `.engineering-kit`):
-
 ```bash
 cd /caminho/do/seu/projeto
 git submodule add https://github.com/wesleyosantos91/wesleyosantos91-engineering-kit .engineering-kit
+git config -f .gitmodules submodule..engineering-kit.branch main   # rastrear main
 ```
 
-Faça o submódulo **rastrear o branch `main`** (para que `update --remote` pegue o topo):
+## Passo 2 — popular a raiz (bootstrap)
 
 ```bash
-git config -f .gitmodules submodule..engineering-kit.branch main
+bash .engineering-kit/bootstrap.sh
 ```
 
-## Passo 2 — rodar o install
+O `bootstrap.sh` (dentro do submódulo):
 
-```bash
-bash .engineering-kit/install.sh --base-package com.acme.orders --name orders
-```
-
-Flags:
+1. **Popula a raiz** do projeto: `.claude/`, `.codex/`, `.agents/`, `.ai/`, `scripts/`,
+   `.mcp.json`, `openspec/`, etc. viram **symlinks** apontando pro submódulo; e
+   `CLAUDE.md`, `AGENTS.md`, `.ai/harness.yaml`, `.devcontainer/devcontainer.json`,
+   `config/pom-quality-plugins.example.xml` são **copiados e personalizados**.
+2. O **base package é auto-detectado** do seu `src/main/java` (declaração `package` do
+   1º `.java`). Para forçar: `bash .engineering-kit/bootstrap.sh --base-package com.acme.app --name app`.
+3. Se rodado **dentro do DevContainer**, também instala as toolchains/CLIs (ver Passo 4).
 
 | Flag | Default | Uso |
 |---|---|---|
-| `--base-package <pkg>` | `com.example` | base package Java usado no scaffold de `CLAUDE.md`, `AGENTS.md`, `.ai/harness.yaml`, `pom-quality-plugins`. |
-| `--name <nome>` | nome da pasta do projeto | nome do projeto (e do container no `devcontainer.json`). |
-| `--target <dir>` | superprojeto do submódulo | alvo explícito (raro; o script detecta sozinho). |
-| `--force` | — | sobrescreve symlinks/arquivos já existentes. |
+| `--base-package <pkg>` | auto-detectado (ou `com.example`) | base package Java do scaffold. |
+| `--name <nome>` | nome da pasta | nome do projeto / do container. |
+| `--force` | — | sobrescreve symlinks/arquivos existentes. |
+| `--target <dir>` | superprojeto do submódulo | alvo explícito (raro). |
 
-O que o install faz:
-
-1. **Symlinka** o que é estável (`.claude/`, `.codex/`, `.agents/`, `scripts/`,
-   `docs/`, `.mcp.json`, `openspec/`, partes estáveis de `.ai/`, `.devcontainer/`, `config/`).
-2. **Copia e personaliza** os arquivos com placeholder
-   (`CLAUDE.md`, `AGENTS.md`, `.ai/harness.yaml`, `.devcontainer/devcontainer.json`,
-   `config/pom-quality-plugins.example.xml`).
-3. Marca os `*.sh` como executáveis.
-4. Aplica um bloco gerenciado no `.gitignore` do projeto.
+> Pode pular este passo: se só fizer `git submodule add` e subir o DevContainer, o
+> `postCreate` roda o `bootstrap.sh` e popula a raiz **e** instala as ferramentas de uma vez.
 
 ## Passo 3 — versionar
 
 ```bash
-git add .gitmodules .engineering-kit CLAUDE.md AGENTS.md .ai/harness.yaml .gitignore
-git commit -m "chore: adiciona engineering-kit"
+git add -A && git commit -m "chore: adiciona engineering-kit"
 ```
 
-> Os **symlinks** também entram no commit (o git versiona o link, não o conteúdo). Quem
-> clonar o projeto precisa inicializar o submódulo (Passo 5).
+> Os **symlinks** entram no commit (o git versiona o link). Quem clonar precisa inicializar
+> o submódulo (Passo 5).
 
 ## Passo 4 — abrir no DevContainer
 
-No VS Code: **"Reopen in Container"** (ou `devcontainer up --workspace-folder .`).
-O `postCreateCommand`/`install-tools.sh` instala Claude Code, Codex, RTK, OpenSpec,
-Repomix, `uv` e **registra os MCPs do Codex**.
+VS Code: **"Reopen in Container"** → escolha a config
+`.engineering-kit/kit/.devcontainer/devcontainer.json` (ou `devcontainer up`).
+
+O `postCreate` (`bootstrap.sh`) instala e inicia:
+
+- **Toolchains**: Java 25 + Maven + Gradle · Python 3.12 + `uv` · Go · Rust · Terraform ·
+  AWS CLI · Node 22 · Docker-in-Docker.
+- **Teste de carga**: JMeter · k6 (dashboard web embutido na porta 5665).
+- **IA**: Claude Code · Codex · OpenSpec · Repomix · **RTK** (Claude E Codex) ·
+  **Caveman** (+ `caveman-review`). MCPs registrados para os dois.
 
 Depois:
-- **Claude Code:** na 1ª vez, aprove os MCPs do projeto (definidos em `.mcp.json`).
-- **Secrets:** `cp .env.example .env` e preencha (ex.: `LOCALSTACK_AUTH_TOKEN`). Nunca
-  commite o `.env` (já ignorado).
+- **Claude Code:** aprove os MCPs do projeto na 1ª vez (`.mcp.json`).
+- **Secrets:** `cp .env.example .env` e preencha (nunca commite o `.env`).
 
 ## Passo 5 — clones futuros do projeto
 
-Quem clonar o projeto depois precisa trazer o submódulo e re-aplicar:
-
 ```bash
-git clone <seu-projeto>
-cd <seu-projeto>
+git clone --recurse-submodules <seu-projeto>
+# OU, se já clonou sem submódulos:
 git submodule update --init --recursive
-bash .engineering-kit/install.sh    # recria symlinks locais (não sobrescreve os copiados)
+bash .engineering-kit/bootstrap.sh   # recria symlinks (não sobrescreve seus arquivos)
 ```
 
 ---
@@ -90,15 +87,16 @@ bash .engineering-kit/install.sh    # recria symlinks locais (não sobrescreve o
 ## Verificação rápida
 
 ```bash
-# symlinks apontando p/ dentro do submódulo
-ls -l .claude .codex scripts        # devem mostrar -> .engineering-kit/kit/...
+# symlinks apontando p/ o submódulo
+ls -l .claude .codex .agents scripts        # -> .engineering-kit/kit/...
 
-# skill nova disponível
-ls .claude/skills/prd-produto/
+# skills disponíveis (Claude nativo + Codex auto-discovery em .agents/skills/)
+ls .claude/skills .agents/skills
 
 # nenhum placeholder restante nos arquivos copiados
 grep -rIl --exclude-dir=.git -e '__BASE_PACKAGE__' -e '__PROJECT_NAME__' . | grep -v '^\./.engineering-kit/'
 # (saída vazia = OK)
 ```
 
-Próximos: [`updating.md`](updating.md) · [`architecture.md`](architecture.md) · [`windows.md`](windows.md).
+Próximos: [`commands.md`](commands.md) (atalhos) · [`updating.md`](updating.md) ·
+[`architecture.md`](architecture.md) · [`windows.md`](windows.md).

@@ -8,7 +8,7 @@ poliglota, quality gates, MCPs e scripts — consumido por **qualquer projeto** 
 
 <br/>
 
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-1f6feb?logo=creativecommons&logoColor=white)](LICENSE)
+[![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-1f6feb?logo=creativecommons&logoColor=white)](LICENSE)
 [![Consumido como](https://img.shields.io/badge/uso-git%20submodule-f05032?logo=git&logoColor=white)](#-quickstart)
 [![DevContainer](https://img.shields.io/badge/DevContainer-pronto-2496ED?logo=docker&logoColor=white)](#o-que-vem-no-kit-kit)
 [![Mantido por](https://img.shields.io/badge/autor-Wesley%20Oliveira%20Santos-24292e?logo=github&logoColor=white)](https://github.com/wesleyosantos91)
@@ -218,6 +218,7 @@ Guias passo a passo em [`docs/`](docs/):
 
 | Documento | O que cobre |
 |---|---|
+| [`docs/commands.md`](docs/commands.md) | **Cheatsheet** de comandos/skills/ferramentas (prd, rtk, caveman, k6, qualidade…) p/ Claude e Codex. |
 | [`docs/getting-started.md`](docs/getting-started.md) | Adicionar o submódulo, rodar o `bootstrap.sh`, abrir o DevContainer, flags, verificação. |
 | [`docs/updating.md`](docs/updating.md) | Como o `git submodule update --remote` propaga skills/configs novas (e o que exige re-rodar). |
 | [`docs/architecture.md`](docs/architecture.md) | Decisão symlink × cópia, detecção de placeholders, layout do repositório. |
@@ -230,9 +231,12 @@ E dentro do kit, [`kit/docs/ai-harness/`](kit/docs/ai-harness/) documenta o harn
 
 ## 📄 Licença
 
-**CC BY-NC-SA 4.0** (Creative Commons Attribution-NonCommercial-ShareAlike 4.0) —
-ver [`LICENSE`](LICENSE).
+**CC BY-SA 4.0** (Creative Commons Attribution-ShareAlike 4.0) — ver [`LICENSE`](LICENSE).
+Reconhecida pelo GitHub (SPDX `CC-BY-SA-4.0`).
 
 - **BY** — credite **Wesley Oliveira Santos** e referencie este projeto.
-- **NC** — proibido uso comercial / venda.
-- **SA** — derivados devem manter esta mesma licença e o código aberto.
+- **SA** — derivados devem manter esta **mesma licença** e o código **aberto** (copyleft).
+
+> Antes era CC BY-NC-SA (com cláusula não-comercial), mas o GitHub não exibe selo para
+> licenças não-comerciais. Trocada para a variante **sem o NC** — a mais próxima que o
+> GitHub reconhece, preservando atribuição e o "manter aberto".

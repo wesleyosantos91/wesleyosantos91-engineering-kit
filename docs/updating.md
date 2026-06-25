@@ -31,7 +31,7 @@ git add .engineering-kit && git commit -m "chore: bump engineering-kit"
 
 ```bash
 git submodule update --remote --merge .engineering-kit
-bash .engineering-kit/install.sh        # só pega itens novos; use --force p/ recriar tudo
+bash .engineering-kit/bootstrap.sh      # só pega itens novos; use --force p/ recriar tudo
 git add .engineering-kit && git commit -m "chore: bump engineering-kit"
 ```
 
@@ -42,10 +42,10 @@ git add .engineering-kit && git commit -m "chore: bump engineering-kit"
 - **Arquivo NOVO num diretório já symlinkado** (ex.: `.claude/skills/nova-skill/`): como o
   diretório inteiro é um symlink, o arquivo novo aparece automaticamente. Sem ação.
 - **Item de topo novo** (ex.: o kit passou a ter um diretório `.cursor/`): rode o
-  `install.sh`/`update.sh` para criar o symlink novo.
+  `bootstrap.sh`/`update.sh` para criar o symlink novo.
 - **Arquivo por-projeto mudou no kit** (ex.: novo placeholder em `CLAUDE.md`): como ele foi
   **copiado**, sua versão não muda sozinha. Compare com `kit/CLAUDE.md` e aplique à mão, ou
-  rode `install.sh --force` para regenerar (perde suas edições locais).
+  rode `bootstrap.sh --force` para regenerar (perde suas edições locais).
 
 ## Fixar / reverter versão
 
